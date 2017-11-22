@@ -14,6 +14,10 @@ double diff_time( struct timespec start, struct timespec end) {
 
 void bench_processus(int max_processus) {
 
+  if(max_processus < 1 && max_processus > 10000) {
+    return;
+  }
+
   int n_processus=0;
   pid_t pid;
 
