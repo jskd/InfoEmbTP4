@@ -9,5 +9,5 @@ all: processus thread
 bench-processus: processus
 	taskset -c 0 ./processus 10000
 
-bench-processus: thread
+bench-thread: thread
 	taskset -c 0 ./thread 10000
