@@ -6,6 +6,8 @@ thread: thread.c
 
 all: processus thread
 
-bench: all
+bench-processus: processus
 	taskset -c 0 ./processus 10000
+
+bench-processus: thread
 	taskset -c 0 ./thread 10000
