@@ -48,7 +48,7 @@ int main (int argc, char **argv) {
   }
 
   int max_processus= atoi(argv[1]);
-  if(max_processus < 1) {
+  if(max_processus < 1 && max_processus > 10000) {
     printf("Nombre-echantillon incorect. (Entre 0 et 10000)\n");
     exit(1);
   }
