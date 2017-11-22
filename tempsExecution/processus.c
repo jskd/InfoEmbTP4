@@ -56,10 +56,10 @@ void bench_processus(int max_processus) {
 		host_get_clock_service(mach_host_self(), CALENDAR_CLOCK, &cclock);
 		clock_get_time(cclock, &mts);
 		mach_port_deallocate(mach_task_self(), cclock);
-		timeStart.tv_sec = mts.tv_sec;
-		timeStart.tv_nsec = mts.tv_nsec;
+		timeEnd.tv_sec = mts.tv_sec;
+		timeEnd.tv_nsec = mts.tv_nsec;
 	#else
-		clock_gettime(CLOCK_REALTIME, &timeStart);
+		clock_gettime(CLOCK_REALTIME, &timeEnd);
 	#endif
 
   // moyenne en ms
