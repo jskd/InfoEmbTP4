@@ -32,6 +32,37 @@
 	\item{\textbf{Mesure d'opérations en C : résultat des deux mesures}}
 		\newline
 
+		Processus
+
+		Source: tempsExecution/processus.c
+
+		Point initial de mesure du temps: Avant la boucle de fork
+		Point final de mesure du temps: Après la boucle de fork
+
+    Les mesures prennent le temps de création d'un fork ainsi que l'incrémentation
+	  de la variable n_processus. La mesure du temps d'incrementation parasite
+		légèrement la mesure mais il s'agit surement de la solution la _IO_FILE_plus
+		à mettre en oeuvre.
+
+    Thread
+
+		Source: tempsExecution/thread.c
+
+    Point initial de mesure du temps: Avant la boucle de pthread_create
+		Point final de mesure du temps: Après la boucle de pthread_create
+
+    Comme pour la messure des processus, l'incrémentation de la variable
+		n_thread parasite la mesure.
+
+
+    Résultat obtenu
+
+		Destop          Laptop
+    
+15.249932 ms
+7.592055 ms
+
+
 	\item{\textbf{Répétition de la mesure}}
 		\newline
 
