@@ -19,21 +19,28 @@ void *thread_exit_func(){
 
 void bench_thread(int max_thread) {
 
+  int n_thread=0;
+  pthread_t pid;
+
   struct timespec timeStart, timeEnd;
   clock_gettime(CLOCK_REALTIME, &timeStart);
 
-  pthread_t pid;
-
-  for(int n_thread=0;  n_thread < max_thread; n_thread++){
-    pthread_create(&pid, NULL, thread_exit_func, NULL);
+  while(n_thread < max_thread){
+    if(pthread_create(&pid, NULL, thread_exit_func, NULL) != 0)
+      break;
+    else
+      n_thread++;
   }
 
   clock_gettime(CLOCK_REALTIME, &timeEnd);
 
-  // moyenne en ms
-  double moyenne= (diff_time(timeStart, timeEnd) / max_thread) * NUMBER_OF_MS_IN_ONE_S;
+  if(n_thread != max_thread)
+    printf("Attention: nombre d'échantillon non attein. (pthread_create failed)\n");
 
-  printf("Un thread (échantillon de %d) prend en moyenne: %lf ms.\n", max_thread, moyenne );
+  // moyenne en ms
+  double moyenne= (diff_time(timeStart, timeEnd) / n_thread) * NUMBER_OF_MS_IN_ONE_S;
+
+  printf("Un thread (échantillon de %d) prend en moyenne: %lf ms.\n", n_thread, moyenne );
 
 }
 

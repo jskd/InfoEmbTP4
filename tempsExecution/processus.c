@@ -15,12 +15,13 @@ double diff_time( struct timespec start, struct timespec end) {
 void bench_processus(int max_processus) {
 
   int n_processus=0;
+  pid_t pid;
 
   struct timespec timeStart, timeEnd;
   clock_gettime(CLOCK_REALTIME, &timeStart);
 
-  while(n_processus <max_processus){
-    pid_t pid=fork();
+  while(n_processus < max_processus){
+    pid=fork();
     if (pid == 0)
      exit(0);
     else if(pid > 0)
@@ -38,7 +39,6 @@ void bench_processus(int max_processus) {
   double moyenne= (diff_time(timeStart, timeEnd) / n_processus) * NUMBER_OF_MS_IN_ONE_S;
 
   printf("Un processus (échantillon de %d) prend en moyenne: %lf ms.\n", n_processus, moyenne );
-
 }
 
 int main (int argc, char **argv) {
