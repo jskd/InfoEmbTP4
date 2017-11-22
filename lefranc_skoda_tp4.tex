@@ -19,94 +19,70 @@
 \textbf{Réel :}
 
 \section{Etapes pour la création/destruction}
-\begin{enumerate}
-	\item{\textbf{Quel outil pour quelle mesure?}}
-		\newline
+
+	\subsection{Quel outil pour quelle mesure?}
 		Et bien il faut mesurer le total, donc la ramette, puis le diviser par le nombre de feuilles dans la ramette. C'est le même principe avec le temps dans le tp. On peut mesurer un gros bloc d'opérations puis diviser le total par le nombre d'opérations dans le bloc.
+
+	\subsection{(Optionnel) Fonctions de mesure de temps sous linux}
+
+	\subsection{Mesure d'opérations en C : résultat des deux mesures}
+
+		\textbf{Processus}\newline
+		\textit{Source: tempsExecution/processus.c} \newline
+		Point initial de mesure du temps: Avant la boucle de fork \newline
+		Point final de mesure du temps: Après la boucle de fork \newline
 		\newline
 
-	\item{\textbf{(Optionnel) Fonctions de mesure de temps sous linux}}
-		\newline
-
-	\item{\textbf{Mesure d'opérations en C : résultat des deux mesures}}
-		\newline
-
-		Processus
-
-		Source: tempsExecution/processus.c
-
-		Point initial de mesure du temps: Avant la boucle de fork
-		Point final de mesure du temps: Après la boucle de fork
-
-    Les mesures prennent le temps de création d'un fork ainsi que l'incrémentation
-	  de la variable n\_processus. La mesure du temps d'incrementation parasite
+		Les mesures prennent le temps de création d'un fork ainsi que l'incrémentation
+		de la variable n\_processus. La mesure du temps d'incrementation parasite
 		légèrement la mesure mais il s'agit surement de la solution la plus
-		compréhensible et simple à mettre en oeuvre.
+		compréhensible et simple à mettre en oeuvre.\newline
+		\newline
 
-    Thread
+		\textbf{Thread}\newline
+		\textit{Source: tempsExecution/thread.c}\newline
+		Point initial de mesure du temps: Avant la boucle de pthread\_create\newline
+		Point final de mesure du temps: Après la boucle de pthread\_create\newline
+		\newline
+		Comme pour la messure des processus, l'incrémentation de la variable
+		n\_thread parasite la mesure.\newline
 
-		Source: tempsExecution/thread.c
+		Résultat obtenu
 
-    Point initial de mesure du temps: Avant la boucle de pthread\_create
-		Point final de mesure du temps: Après la boucle de pthread\_create
-
-    Comme pour la messure des processus, l'incrémentation de la variable
-		n\_thread parasite la mesure.
-
-
-    Résultat obtenu
-
-    Chacun des résultat suivant sont produit avec "taskset -c 0" pour avoir
+		Chacun des résultat suivant sont produit avec "taskset -c 0" pour avoir
 		une exécution sur un seul coeur.
 
 		\begin{center}
 		  \begin{tabular}{ | c | c | c | }
-
 				\hline
-	&	Destop      &    Laptop \\
-\hline
+					&	Destop      &    Laptop \\
+				\hline
+					processus & 53.939709 ms  &     86.157382 ms \\
+				\hline
+					thread    & 12.604273 ms  &      24.614902 ms \\
+				\hline
+			\end{tabular}
+		\end{center}
 
-processus & 53.939709 ms  &     86.157382 ms \\
-\hline
-thread    & 12.604273 ms  &      24.614902 ms \\
-\hline
-  \end{tabular}
-\end{center}
+	\subsection{Répétez votre mesure. Plusieurs fois. Le résultat obtenu est-il constant? Quelles méthodes statistiques devraient être utilisées pour « publier » des résultats ?}
 
-Répétez votre mesure. Plusieurs fois.
-
-Le résultat obtenu est-il constant? Quelles méthodes statistiques devraient être utilisées pour
-« publier » des résultats ?
-
-Le résultat n'est pas contant et il est fort probable que les résultat suivent
-une loi normale, utiliser une medianne, l'écart type ou la variance semble plus approprié.
-
-
-Énumérez les phénomènes, facteurs qui peuvent influencer la mesure effectuée.
-
-Les caractéritique physique d'une machine peuvent faire varier énormement les
-mesures (nombre de coeurs, fréquence etc) ainsi que l'état de la machine à
-l'instant de l'éxecution (nombre de processus actif).
-
-Il n'est pas possible de fournir un temps minimum ni même un temps maximum,
-cependant il est possible d'établir une ordre de grandeur.
-
-La création d'un thread est plus rapide de 3 à 5 fois que la création d'un
-processus.
-
-Créer un thread prendre dans l'ordre de la dizaine de microseconde.
-Créer un processus prend dans l'ordre de la cinquantaine de microseconde.
-
-
-	\item{\textbf{Répétition de la mesure}}
+		Le résultat n'est pas contant et il est fort probable que les résultat suivent
+		une loi normale, utiliser une medianne, l'écart type ou la variance semble plus approprié.
 		\newline
 
-	\item{\textbf{Phénomènes et facteurs qui peuvent influencer la mesure}}
-		\newline
+	\subsection{Phénomènes et facteurs qui peuvent influencer la mesure}
 
-	\item{\textbf{Répétition de la mesure}}
-		\newline
-\end{enumerate}
+		Les caractéritique physique d'une machine peuvent faire varier énormement les
+		mesures (nombre de coeurs, fréquence etc) ainsi que l'état de la machine à
+		l'instant de l'éxecution (nombre de processus actif).
+		Il n'est pas possible de fournir un temps minimum ni même un temps maximum,
+		cependant il est possible d'établir une ordre de grandeur.
+		La création d'un thread est plus rapide de 3 à 5 fois que la création d'un
+		processus.\newline
+
+		Créer un thread prendre dans l'ordre de la dizaine de microseconde. \newline
+		Créer un processus prend dans l'ordre de la cinquantaine de microseconde.\newline
+
 
 \section{Changement de contexte}
 
