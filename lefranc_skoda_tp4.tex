@@ -2,7 +2,6 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[francais]{babel}
 \usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
 \usepackage{url}
 
@@ -40,27 +39,36 @@
 		Point final de mesure du temps: Après la boucle de fork
 
     Les mesures prennent le temps de création d'un fork ainsi que l'incrémentation
-	  de la variable n_processus. La mesure du temps d'incrementation parasite
-		légèrement la mesure mais il s'agit surement de la solution la _IO_FILE_plus
-		à mettre en oeuvre.
+	  de la variable n\_processus. La mesure du temps d'incrementation parasite
+		légèrement la mesure mais il s'agit surement de la solution la plus
+		compréhensible et simple à mettre en oeuvre.
 
     Thread
 
 		Source: tempsExecution/thread.c
 
-    Point initial de mesure du temps: Avant la boucle de pthread_create
-		Point final de mesure du temps: Après la boucle de pthread_create
+    Point initial de mesure du temps: Avant la boucle de pthread\_create
+		Point final de mesure du temps: Après la boucle de pthread\_create
 
     Comme pour la messure des processus, l'incrémentation de la variable
-		n_thread parasite la mesure.
+		n\_thread parasite la mesure.
 
 
     Résultat obtenu
+		\begin{center}
+		  \begin{tabular}{ | c | c | c | }
 
-		Destop          Laptop
+				\hline
+	&	Destop      &    Laptop \\
+\hline
 
-processus 53.939709 ms       86.157382 ms
-thread    12.604273 ms        24.614902 ms
+processus & 53.939709 ms  &     86.157382 ms \\
+\hline
+thread    & 12.604273 ms  &      24.614902 ms \\
+\hline
+  \end{tabular}
+\end{center}
+
 
 avec: taskset -c 0
 
