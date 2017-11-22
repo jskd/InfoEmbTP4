@@ -55,6 +55,10 @@
 
 
     Résultat obtenu
+
+    Chacun des résultat suivant sont produit avec "taskset -c 0" pour avoir
+		une exécution sur un seul coeur.
+
 		\begin{center}
 		  \begin{tabular}{ | c | c | c | }
 
@@ -69,8 +73,30 @@ thread    & 12.604273 ms  &      24.614902 ms \\
   \end{tabular}
 \end{center}
 
+Répétez votre mesure. Plusieurs fois.
 
-avec: taskset -c 0
+Le résultat obtenu est-il constant? Quelles méthodes statistiques devraient être utilisées pour
+« publier » des résultats ?
+
+Le résultat n'est pas contant et il est fort probable que les résultat suivent
+une loi normale, utiliser une medianne, l'écart type ou la variance semble plus approprié.
+
+
+Énumérez les phénomènes, facteurs qui peuvent influencer la mesure effectuée.
+
+Les caractéritique physique d'une machine peuvent faire varier énormement les
+mesures (nombre de coeurs, fréquence etc) ainsi que l'état de la machine à
+l'instant de l'éxecution (nombre de processus actif).
+
+Il n'est pas possible de fournir un temps minimum ni même un temps maximum,
+cependant il est possible d'établir une ordre de grandeur.
+
+La création d'un thread est plus rapide de 3 à 5 fois que la création d'un
+processus.
+
+Créer un thread prendre dans l'ordre de la dizaine de microseconde.
+Créer un processus prend dans l'ordre de la cinquantaine de microseconde.
+
 
 	\item{\textbf{Répétition de la mesure}}
 		\newline
