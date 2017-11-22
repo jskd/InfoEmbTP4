@@ -19,6 +19,10 @@ void *thread_exit_func(){
 
 void bench_thread(int max_thread) {
 
+  if(max_thread < 1 && max_thread > 10000) {
+    return;
+  }
+
   int n_thread=0;
   pthread_t pid;
 
