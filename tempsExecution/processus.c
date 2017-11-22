@@ -12,9 +12,6 @@ double diff_time( struct timespec start, struct timespec end) {
     +    ((double) end.tv_nsec-(double) start.tv_nsec) / NUMBER_OF_NS_IN_ONE_S;
 }
 
-
-
-
 void bench_processus(int max_processus) {
   int n_processus=0;
 
@@ -47,14 +44,15 @@ void bench_processus(int max_processus) {
 
 }
 
+int main (int argc, char **argv) {
 
-int main () {
+  if(argc < 2) {
+    printf("Usage: processus [nombre-echantillon]\n");
+    exit(1);
 
-  bench_processus(10);
-  bench_processus(100);
-  bench_processus(1000);
-  bench_processus(10000);
+  }
 
+  bench_processus(atoi(argv[1]));
 
   exit(0);
 }
