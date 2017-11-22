@@ -50,6 +50,7 @@ int main (int argc, char **argv) {
     exit(1);
   }
 
+  // Pour eviter le débordement
   int max_thread= atoi(argv[1]);
   if(max_thread < 1 && max_thread > 10000) {
     printf("Nombre-echantillon incorect. (Entre 0 et 10000)\n");
