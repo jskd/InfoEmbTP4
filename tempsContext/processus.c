@@ -13,20 +13,23 @@ double diff_time( struct timespec start, struct timespec end) {
     +    ((double) end.tv_nsec-(double) start.tv_nsec) / NUMBER_OF_NS_IN_ONE_S;
 }
 
-void bench_processus(int max_processus) {
+void bench_context_change(int max_context_change) {
 
-  if(max_processus < 1 && max_processus > 10000) {
+  if(max_context_change < 1 && max_context_change > 10000) {
     return;
   }
 
-  int n_processus=0;
   pid_t pid;
 
-  sem_t sem;
-  int pshared = 1;
-  unsigned int value = 1;
+  sem_t sem_parent;
+  sem_t sem_child;
 
-  if((sem_init(&sem, pshared, value)) == 1){
+  if((sem_init(&sem_parent, 1, 0)) == 1){
+    perror("Error initializing semaphore");
+    exit(1);
+  }
+
+  if((sem_init(&sem_child, 1, 1)) == 1){
     perror("Error initializing semaphore");
     exit(1);
   }
@@ -34,49 +37,50 @@ void bench_processus(int max_processus) {
   struct timespec timeStart, timeEnd;
   clock_gettime(CLOCK_REALTIME, &timeStart);
 
-  while(n_processus < max_processus){
-    if((pid = fork()) < 0){
-      perror("Fork Failed");
-      exit(1);
+  if((pid = fork()) < 0) {
+    perror("Fork Failed");
+    exit(1);
+  }
+  else if(pid == 0){ // child
+    for(int n_context_change=0; n_context_change<max_context_change; n_context_change++){
+      printf("Child wait\n");
+      sem_wait(&sem_child);
+      printf("Child post\n");
+      sem_post(&sem_parent);
     }
-
-    else if(pid == 0){ // child
-      sem_wait(&sem);
-      sem_post(&sem);
-      exit(0);
-    }
-    else { // Parent
-      n_processus++;
-      sem_wait(&sem);
-      sem_post(&sem);
+    exit(0);
+  }
+  else { // Parent
+    for(int n_context_change=0; n_context_change<max_context_change; n_context_change++){
+      printf("Parent enter\n");
+      sem_wait(&sem_parent);
+      printf("Parent post\n");
+      sem_post(&sem_child);
     }
   }
 
   clock_gettime(CLOCK_REALTIME, &timeEnd);
 
-  if(n_processus != max_processus)
-    printf("Attention: nombre d'échantillon non attein. (fork failed)\n");
-
   // moyenne en ms
-  double moyenne= (diff_time(timeStart, timeEnd) / n_processus) * NUMBER_OF_MS_IN_ONE_S;
+  double moyenne= (diff_time(timeStart, timeEnd) / max_context_change) * NUMBER_OF_MS_IN_ONE_S;
 
-  printf("Un processus (échantillon de %d) prend en moyenne: %lf ms.\n", n_processus, moyenne );
+  printf("Un context_change (échantillon de %d) prend en moyenne: %lf ms.\n", max_context_change, moyenne );
 }
 
 int main (int argc, char **argv) {
   if(argc < 2) {
-    printf("Usage: processus [nombre-echantillon]\n");
+    printf("Usage: context_change [nombre-echantillon]\n");
     exit(1);
   }
 
   // Pour eviter le débordement
-  int max_processus= atoi(argv[1]);
-  if(max_processus < 1 && max_processus > 10000) {
+  int max_context_change= atoi(argv[1]);
+  if(max_context_change < 1 && max_context_change > 10000) {
     printf("Nombre-echantillon incorect. (Entre 0 et 10000)\n");
     exit(1);
   }
 
-  bench_processus(max_processus);
+  bench_context_change(max_context_change);
 
   exit(0);
 }
