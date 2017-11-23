@@ -1,3 +1,4 @@
+/* Jérôme SKODA , Joaquim LEFRANC  TP° 4 */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -67,7 +68,7 @@ void bench_context_change(int max_context_change) {
   clock_gettime(CLOCK_REALTIME, &timeEnd);
 
   sem_destroy(&sem_one);
-  sem_destroy(&sem_two); 
+  sem_destroy(&sem_two);
 
   // moyenne en ms
   double moyenne= (diff_time(timeStart, timeEnd) / max_context_change) * NUMBER_OF_MS_IN_ONE_S;
