@@ -22,11 +22,11 @@ void bench_processus(int max_processus) {
   int n_processus=0;
   pid_t pid;
 
-  sem_t *sem;
+  sem_t sem;
   int pshared = 1;
   unsigned int value = 1;
 
-  if((sem_init(sem, pshared, value)) == 1){
+  if((sem_init(&sem, pshared, value)) == 1){
     perror("Error initializing semaphore");
     exit(1);
   }
@@ -41,14 +41,14 @@ void bench_processus(int max_processus) {
     }
 
     else if(pid == 0){ // child
-      sem_wait(sem);
-      sem_post(sem);
+      sem_wait(&sem);
+      sem_post(&sem);
       exit(0);
     }
     else { // Parent
       n_processus++;
-      sem_wait(sem);
-      sem_post(sem);
+      sem_wait(&sem);
+      sem_post(&sem);
     }
   }
 
