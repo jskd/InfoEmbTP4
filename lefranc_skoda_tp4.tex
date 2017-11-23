@@ -15,8 +15,8 @@
 \maketitle
 
 \section{Estimations}
-\textbf{Initiale :} 3h
-\textbf{Réel :}
+\textbf{Initiale :} 4h (Pas le choix il faut le rendre dans 4h) \newline
+\textbf{Réel :} 4h
 
 \section{Etapes pour la création/destruction}
 
@@ -79,6 +79,9 @@
 			\end{tabular}
 		\end{center}
 
+		Desktop: CPU: i7 4790K @ 4.3GHz 4 cores 8 threads RAM: 16Go @ 1 600MHz
+		Laptop: CPU: i5-2430M @ 2.40GHz 2 cores 4 threads RAM: 32Go @ 1 600MHz
+
 	\subsection{Répétez votre mesure. Plusieurs fois. Le résultat obtenu est-il constant? Quelles méthodes statistiques devraient être utilisées pour « publier » des résultats ?}
 
 		Le résultat n'est pas contant et il est fort probable que les résultat suivent
@@ -100,17 +103,31 @@
 
 \section{Changement de contexte}
 
+Source: tempsContext/processus.c et tempsContext/thread.c
+
 \begin{center}
 	\begin{tabular}{ | c | c | c | }
 		\hline
 			&	Desktop      &    Laptop \\
 		\hline
-			processus & 0.947886 ms  &  2.895871 ms \\
+			processus & 0.947886 ms &  2.895871 ms \\
 		\hline
-			thread    &  yjjyyj  &   uyuj \\
+			thread    & 0.981997 ms &  3.544407 ms \\
 		\hline
 	\end{tabular}
 \end{center}
+
+Desktop: CPU: i7 4790K @ 4.3GHz 4 cores 8 threads RAM: 16Go @ 1 600MHz
+Laptop: CPU: i5-2430M @ 2.40GHz 2 cores 4 threads RAM: 32Go @ 1 600MHz
+
+Pour faire l'ordonnancement, nous avons utilisé deux sémaphore: un est ouvert
+et l'autre bloqué à l'état initial. Chacun des processus ou thread attendent
+chacun l'ouverture d'un sémaphore et ouvre l'autre. De cette manière on obtien
+l'ordonnancement P1 P2 P1 P2 etc.
+
+Les résultat peuvent varier en fonction du type de sémaphore utilisé exemple
+dans thread.c avec des sémaphore partagé, le changement de contexte est plus
+long.
 
 \section{Comparaison avec d'autres résultats de TP}
 
