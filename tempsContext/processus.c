@@ -21,17 +21,34 @@ void bench_processus(int max_processus) {
   int n_processus=0;
   pid_t pid;
 
+  sem_t *sem;
+  int pshared = 1;
+  unsigned int value = 1;
+
+  if((sem_init(sem, pshared, value)) == 1){
+    perror("Error initializing semaphore");
+    exit(1);
+  }
+
   struct timespec timeStart, timeEnd;
   clock_gettime(CLOCK_REALTIME, &timeStart);
 
-  while(n_processus < max_processus){
-    pid=fork();
-    if (pid == 0)
-     exit(0);
-    else if(pid > 0)
+  while(n_processus < max_processus){ 
+    if((pid = fork()) < 0){
+      perror("Fork Failed");
+      exit(1);
+    }
+
+    else if(pid == 0){ // child
+      sem_wait(sem);
+      sem_post(sem);
+      exit(0);
+    }
+    else { // Parent
       n_processus++;
-    else // fail
-      break;
+      sem_wait(sem);
+      sem_post(sem);
+    }
   }
 
   clock_gettime(CLOCK_REALTIME, &timeEnd);
