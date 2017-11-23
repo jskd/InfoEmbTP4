@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <semaphore.h>
 
 #define NUMBER_OF_NS_IN_ONE_S 1000000000L
 #define NUMBER_OF_MS_IN_ONE_S 1000000L
@@ -33,7 +34,7 @@ void bench_processus(int max_processus) {
   struct timespec timeStart, timeEnd;
   clock_gettime(CLOCK_REALTIME, &timeStart);
 
-  while(n_processus < max_processus){ 
+  while(n_processus < max_processus){
     if((pid = fork()) < 0){
       perror("Fork Failed");
       exit(1);
