@@ -13,5 +13,11 @@ bench-thread:
 bench-processus:
 	(cd tempsExecution; make bench-processus)
 
+context-thread:
+	(cd tempsContext; make bench-processus)
+
+context-processus:
+	(cd tempsContext; make bench-thread)
+
 #tar: clean
 #	tar -zcvf PooCAv_Project_G7.tar.gz .gitignore Makefile LICENSE projetv1.pdf README.md UML_v1.pdf deliverables/ bin/ src/
