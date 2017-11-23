@@ -45,12 +45,12 @@ void bench_context_change(int max_context_change) {
   pthread_t t1;
   pthread_t t2;
 
-  if((sem_init(&sem_one, 1, 0)) == 1){
+  if((sem_init(&sem_one, 0, 0)) == 1){
     perror("Error initializing semaphore");
     exit(1);
   }
 
-  if((sem_init(&sem_two, 1, 1)) == 1){
+  if((sem_init(&sem_two, 0, 1)) == 1){
     perror("Error initializing semaphore");
     exit(1);
   }
@@ -65,6 +65,9 @@ void bench_context_change(int max_context_change) {
   pthread_join(t2, NULL);
 
   clock_gettime(CLOCK_REALTIME, &timeEnd);
+
+  sem_destroy(&sem_one);
+  sem_destroy(&sem_two); 
 
   // moyenne en ms
   double moyenne= (diff_time(timeStart, timeEnd) / max_context_change) * NUMBER_OF_MS_IN_ONE_S;
