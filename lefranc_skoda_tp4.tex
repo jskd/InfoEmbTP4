@@ -25,6 +25,21 @@
 
 	\subsection{(Optionnel) Fonctions de mesure de temps sous linux}
 
+	gettimeofday(): C'est un appel system, il retourne le nombre de secondes écoulées depuis le 01/01/1970. Elle donne aussi les microsecondes. La précision est environ de 0,5ms sur Debian (Comme vu dans vos cours). (Temp mural)
+	\newline
+
+	time\_t time : Elle vient de la librairie time.h, le point de départ est 01/01/1970. (Temp mural)
+	\newline
+
+	clock\_gettime : Elle vient de la librairie time.h, elle peut mesurer le temps de différentes façons, elle retourne un résultat en secondes ou nanosecondes.
+	\newline
+
+	clock : Elle vient de la librairie time.h, temps de départ : lancement du processus (Mesure du temps CPU)
+	\newline
+	times : C'est une app system : Page (1) du man.
+	\newline
+
+
 	\subsection{Mesure d'opérations en C : résultat des deux mesures}
 
 		\textbf{Processus}\newline
