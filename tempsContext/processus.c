@@ -4,9 +4,14 @@
 #include <time.h>
 #include <unistd.h>
 #include <semaphore.h>
+#include <fcntl.h>
+
 
 #define NUMBER_OF_NS_IN_ONE_S 1000000000L
 #define NUMBER_OF_MS_IN_ONE_S 1000000L
+
+#define SEM_PARENT_NAME "/sem_parent.sem"
+#define SEM_CHILD_NAME "/sem_child.sem"
 
 double diff_time( struct timespec start, struct timespec end) {
   return ((double) end.tv_sec -(double) start.tv_sec )
@@ -21,17 +26,12 @@ void bench_context_change(int max_context_change) {
 
   pid_t pid;
 
-  sem_t sem_parent;
-  sem_t sem_child;
+  sem_t* sem_child= sem_open(SEM_CHILD_NAME, O_CREAT, 0644, 0);
+  sem_t* sem_parent= sem_open(SEM_PARENT_NAME, O_CREAT, 0644, 1);
 
-  if((sem_init(&sem_parent, 1, 0)) == 1){
+  if(sem_parent == NULL || sem_child == NULL) {
     perror("Error initializing semaphore");
-    exit(1);
-  }
-
-  if((sem_init(&sem_child, 1, 1)) == 1){
-    perror("Error initializing semaphore");
-    exit(1);
+    return;
   }
 
   struct timespec timeStart, timeEnd;
@@ -43,19 +43,15 @@ void bench_context_change(int max_context_change) {
   }
   else if(pid == 0){ // child
     for(int n_context_change=0; n_context_change<max_context_change; n_context_change++){
-      printf("Child wait\n");
-      sem_wait(&sem_child);
-      printf("Child post\n");
-      sem_post(&sem_parent);
+      sem_wait(sem_child);
+      sem_post(sem_parent);
     }
     exit(0);
   }
   else { // Parent
     for(int n_context_change=0; n_context_change<max_context_change; n_context_change++){
-      printf("Parent enter\n");
-      sem_wait(&sem_parent);
-      printf("Parent post\n");
-      sem_post(&sem_child);
+      sem_wait(sem_parent);
+      sem_post(sem_child);
     }
   }
 
