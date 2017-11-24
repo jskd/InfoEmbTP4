@@ -1,0 +1,17 @@
+set term png
+set key left top 
+set terminal png size 1170, 827
+set output "graph.png
+
+set boxwidth 0.00001
+set style fill solid
+
+
+stats "test.dat" u 1:2 nooutput
+set xrange [STATS_min_x:STATS_max_x]
+
+set label 1 sprintf("%.2f", STATS_pos_max_y) center at STATS_pos_max_y, STATS_max_y 
+
+
+
+plot "test.dat" using 1:2 with boxes
