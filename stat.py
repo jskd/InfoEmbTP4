@@ -4,13 +4,13 @@ from os import listdir
 from os.path import isfile, join
 import time
 
-def gen_table(cmd, iter):
+def gen_table(cmd, iter, pres):
   lst= {}
 
   for i in range (iter):
     try:
-      out =  Popen(["taskset","-c", "0", cmd, "1000", "-o"], stdout=PIPE).communicate()[0].decode("utf-8")
-      out = str(round(float(out), 3))
+      out =  Popen(["taskset","-c", "0", cmd, "100", "-o"], stdout=PIPE).communicate()[0].decode("utf-8")
+      out = str(round(float(out), pres))
       if out in lst.keys() :
         lst[out] = lst[out] + 1
       else:
@@ -25,11 +25,11 @@ def gen_table(cmd, iter):
   for temps, nombre in stat:
     f.write( temps + " " + str(nombre)+"\n")
 
-gen_table("./expliciteFIFO/processus", 10000)
-gen_table("./expliciteFIFO/thread", 10000)
-gen_table("./impliciteFIFO/processus", 10000)
-gen_table("./impliciteFIFO/thread", 10000)
-gen_table("./tempsContext/processus", 10000)
-gen_table("./tempsContext/thread", 10000)
-gen_table("./tempsExecution/processus", 10000)
-gen_table("./tempsExecution/thread", 10000)
+gen_table("./expliciteFIFO/processus", 10000, 2)
+gen_table("./expliciteFIFO/thread", 10000, 2)
+gen_table("./impliciteFIFO/processus", 10000, 2)
+gen_table("./impliciteFIFO/thread", 10000, 2)
+gen_table("./tempsContext/processus", 10000, 2)
+gen_table("./tempsContext/thread", 10000, 2)
+gen_table("./tempsExecution/processus", 10000, 1)
+gen_table("./tempsExecution/thread", 10000, 1)
