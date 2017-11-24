@@ -35,6 +35,8 @@ void bench_context_change(int max_context_change) {
     return;
   }
 
+  max_context_change/= 2; // TODO: quick fix pour les deux changement de context fois 2
+
   struct timespec timeStart, timeEnd;
   clock_gettime(CLOCK_REALTIME, &timeStart);
 
@@ -57,6 +59,8 @@ void bench_context_change(int max_context_change) {
   }
 
   clock_gettime(CLOCK_REALTIME, &timeEnd);
+
+  max_context_change*= 2; // TODO: quick fix pour les deux changement de context fois 2
 
   // moyenne en ms
   double moyenne= (diff_time(timeStart, timeEnd) / max_context_change) * NUMBER_OF_MS_IN_ONE_S;

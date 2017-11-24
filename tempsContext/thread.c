@@ -43,6 +43,7 @@ void bench_context_change(int max_context_change) {
     return;
   }
 
+
   pthread_t t1;
   pthread_t t2;
 
@@ -55,6 +56,8 @@ void bench_context_change(int max_context_change) {
     perror("Error initializing semaphore");
     exit(1);
   }
+
+  max_context_change/= 2; // TODO: quick fix pour les deux changement de context fois 2
 
   struct timespec timeStart, timeEnd;
   clock_gettime(CLOCK_REALTIME, &timeStart);
@@ -70,7 +73,9 @@ void bench_context_change(int max_context_change) {
   sem_destroy(&sem_one);
   sem_destroy(&sem_two);
 
-  // moyenne en ms
+  max_context_change*= 2; // TODO: quick fix pour les deux changement de context fois 2
+
+  // moyenne en ms 
   double moyenne= (diff_time(timeStart, timeEnd) / max_context_change) * NUMBER_OF_MS_IN_ONE_S;
 
   printf("Un context_change (échantillon de %d) prend en moyenne: %lf ms.\n", max_context_change, moyenne );
