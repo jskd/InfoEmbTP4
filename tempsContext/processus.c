@@ -44,18 +44,21 @@ void bench_context_change(int max_context_change) {
     perror("Fork Failed");
     exit(1);
   }
-  else if(pid == 0){ // child
+  else if(pid == 0)
+  { // child
     for(int n_context_change=0; n_context_change<max_context_change; n_context_change++){
       sem_wait(sem_child);
       sem_post(sem_parent);
     }
     exit(0);
   }
-  else { // Parent
+  else 
+  { // Parent
     for(int n_context_change=0; n_context_change<max_context_change; n_context_change++){
       sem_wait(sem_parent);
       sem_post(sem_child);
     }
+    waitpid(-1, NULL, 0);
   }
 
   clock_gettime(CLOCK_REALTIME, &timeEnd);

@@ -63,6 +63,7 @@ void bench_context_change(int max_context_change) {
       sem_wait(sem_parent);
       sem_post(sem_child);
     }
+    waitpid(-1, NULL, 0);
   }
 
   clock_gettime(CLOCK_REALTIME, &timeEnd);
