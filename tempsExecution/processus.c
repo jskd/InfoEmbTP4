@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <string.h>
 
 #define NUMBER_OF_NS_IN_ONE_S 1000000000L
 #define NUMBER_OF_MS_IN_ONE_S 1000000L
@@ -13,7 +14,8 @@ double diff_time( struct timespec start, struct timespec end) {
     +    ((double) end.tv_nsec-(double) start.tv_nsec) / NUMBER_OF_NS_IN_ONE_S;
 }
 
-void bench_processus(int max_processus) {
+// only = result only
+void bench_processus(int max_processus, char only) {
 
   if(max_processus < 1 && max_processus > 10000) {
     return;
@@ -38,12 +40,16 @@ void bench_processus(int max_processus) {
   clock_gettime(CLOCK_REALTIME, &timeEnd);
 
   if(n_processus != max_processus)
-    printf("Attention: nombre d'échantillon non attein. (fork failed)\n");
+    if(!only)
+      printf("Attention: nombre d'échantillon non attein. (fork failed)\n");
 
   // moyenne en ms
   double moyenne= (diff_time(timeStart, timeEnd) / n_processus) * NUMBER_OF_MS_IN_ONE_S;
 
-  printf("Un processus (échantillon de %d) prend en moyenne: %lf ms.\n", n_processus, moyenne );
+  if(only)
+    printf("%lf\n", moyenne );
+  else
+    printf("Un processus (échantillon de %d) prend en moyenne: %lf ms.\n", n_processus, moyenne );
 }
 
 int main (int argc, char **argv) {
@@ -59,7 +65,12 @@ int main (int argc, char **argv) {
     exit(1);
   }
 
-  bench_processus(max_processus);
+  char only=0;
+  if(argc >= 3)
+    if(strcmp(argv[2], "-o") == 0)
+      only=1;
+
+  bench_processus(max_processus, only);
 
   exit(0);
 }

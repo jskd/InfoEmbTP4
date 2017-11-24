@@ -6,7 +6,8 @@
 #include <unistd.h>
 #include <semaphore.h>
 #include <fcntl.h>
-
+#include <string.h>
+#include <sys/wait.h>
 
 #define NUMBER_OF_NS_IN_ONE_S 1000000000L
 #define NUMBER_OF_MS_IN_ONE_S 1000000L
@@ -19,7 +20,8 @@ double diff_time( struct timespec start, struct timespec end) {
     +    ((double) end.tv_nsec-(double) start.tv_nsec) / NUMBER_OF_NS_IN_ONE_S;
 }
 
-void bench_context_change(int max_context_change) {
+// only = result only
+void bench_context_change(int max_context_change, char only) {
 
   if(max_context_change < 1 && max_context_change > 10000) {
     return;
@@ -52,7 +54,7 @@ void bench_context_change(int max_context_change) {
     }
     exit(0);
   }
-  else 
+  else
   { // Parent
     for(int n_context_change=0; n_context_change<max_context_change; n_context_change++){
       sem_wait(sem_parent);
@@ -68,7 +70,10 @@ void bench_context_change(int max_context_change) {
   // moyenne en ms
   double moyenne= (diff_time(timeStart, timeEnd) / max_context_change) * NUMBER_OF_MS_IN_ONE_S;
 
-  printf("Un context_change (échantillon de %d) prend en moyenne: %lf ms.\n", max_context_change, moyenne );
+  if(only)
+    printf("%lf\n", moyenne );
+  else
+    printf("Un context_change (échantillon de %d) prend en moyenne: %lf ms.\n", max_context_change, moyenne );
 }
 
 int main (int argc, char **argv) {
@@ -84,7 +89,12 @@ int main (int argc, char **argv) {
     exit(1);
   }
 
-  bench_context_change(max_context_change);
+  char only=0;
+  if(argc >= 3)
+    if(strcmp(argv[2], "-o") == 0)
+      only=1;
+
+  bench_context_change(max_context_change, only);
 
   exit(0);
 }

@@ -5,6 +5,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <string.h>
 
 #define NUMBER_OF_NS_IN_ONE_S 1000000000L
 #define NUMBER_OF_MS_IN_ONE_S 1000000L
@@ -18,7 +19,8 @@ void *thread_exit_func(){
   pthread_exit(NULL);
 }
 
-void bench_thread(int max_thread) {
+// only = result only
+void bench_thread(int max_thread, char only) {
 
   if(max_thread < 1 && max_thread > 10000) {
     return;
@@ -40,13 +42,16 @@ void bench_thread(int max_thread) {
   clock_gettime(CLOCK_REALTIME, &timeEnd);
 
   if(n_thread != max_thread)
-    printf("Attention: nombre d'échantillon non attein. (pthread_create failed)\n");
+    if(!only)
+      printf("Attention: nombre d'échantillon non attein. (pthread_create failed)\n");
 
   // moyenne en ms
   double moyenne= (diff_time(timeStart, timeEnd) / n_thread) * NUMBER_OF_MS_IN_ONE_S;
 
-  printf("Un thread (échantillon de %d) prend en moyenne: %lf ms.\n", n_thread, moyenne );
-
+  if(only)
+    printf("%lf\n", moyenne );
+  else
+    printf("Un thread (échantillon de %d) prend en moyenne: %lf ms.\n", n_thread, moyenne );
 }
 
 int main (int argc, char **argv) {
@@ -62,7 +67,12 @@ int main (int argc, char **argv) {
     exit(1);
   }
 
-  bench_thread(max_thread);
+  char only=0;
+  if(argc >= 3)
+    if(strcmp(argv[2], "-o") == 0)
+      only=1;
+
+  bench_thread(max_thread, only);
 
   exit(0);
 }
