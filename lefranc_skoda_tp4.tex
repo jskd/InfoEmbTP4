@@ -4,7 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
 \usepackage{url}
-
+\usepackage{graphicx}
 \hbadness=99999
 \title{TD4 - InfoEmb}
 \author{Jérôme Skoda, Joaquim Lefranc}
@@ -16,7 +16,7 @@
 
 \section{Estimations}
 \textbf{Initiale :} 4h (Pas le choix il faut le rendre dans 4h) \newline
-\textbf{Réel :} 4h
+\textbf{Réel :} 7h: (4h + 3h d'extra)
 
 \section{Etapes pour la création/destruction}
 
@@ -110,9 +110,9 @@ Source: tempsContext/processus.c et tempsContext/thread.c
 		\hline
 			&	Desktop      &    Laptop \\
 		\hline
-			processus & 0.947886 ms &  2.895871 ms \\
+			processus & 1.187886 ms &  2.895871 ms \\
 		\hline
-			thread    & 0.981997 ms &  3.544407 ms \\
+			thread    & 0.911997 ms &  3.544407 ms \\
 		\hline
 	\end{tabular}
 \end{center}
@@ -125,9 +125,19 @@ et l'autre bloqué à l'état initial. Chacun des processus ou thread attendent
 chacun l'ouverture d'un sémaphore et ouvre l'autre. De cette manière on obtien
 l'ordonnancement P1 P2 P1 P2 etc.
 
-Les résultat peuvent varier en fonction du type de sémaphore utilisé exemple
+Les résultat peuvent varier en fonction de de sémaphore utilisé exemple
 dans thread.c avec des sémaphore partagé, le changement de contexte est plus
 long.
+
+
+Source: expliciteFIFO/processus.c et expliciteFIFO/thread.c et  impliciteFIFO/processus.c et impliciteFIFO/thread.c  
+
+Le changement de contexte implicite et explicite, on remarque que les thread sont plus rapide.
+
+Voici un graph sur basé sur 1000 échantillon de moyenne. 
+Le maximum de chaque courbe représente le résultat qui a statistiquement plus de chance de tomber.
+
+\includegraphics[width=\linewidth]{graph.png}.
 
 \section{Comparaison avec d'autres résultats de TP}
 
@@ -138,6 +148,6 @@ Cependant nos résultats sont cohérents avec ceux d'autres groupes, les ordres 
 \section{Outils de « benchmarking »}
 La commande ./lat\_proc -N 1000 fork nous donne une granularité de 62 microsecondes. \newline
 
-
+La personne chargé de cette partie est parti en voyage aux Bahamas.
 
 \end{document}
