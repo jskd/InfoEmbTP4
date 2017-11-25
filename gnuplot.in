@@ -1,17 +1,42 @@
 set term png
-set key left top 
+set key left top
 set terminal png size 1170, 827
 set output "graph.png
 
-set boxwidth 0.00001
-set style fill solid
+set xlabel "Temps moyen (en ms)"
+set ylabel "Nombre de moyenne sur 1000"
+
+set xrange [0.5:1.4]
+set yrange [0:260]
+
+set style fill solid 0.8 border -1
+set boxwidth 0.3 relative
+
+dwidth = 0.001
+
+stats "data/expliciteFIFOprocessus.data" u 1:2 nooutput
+set label 1 sprintf("%.2fms", STATS_pos_max_y) left at STATS_pos_max_y, STATS_max_y
+
+stats "data/expliciteFIFOthread.data" u 1:2 nooutput
+set label 2 sprintf("%.2fms", STATS_pos_max_y) left at STATS_pos_max_y, STATS_max_y
+
+stats "data/impliciteFIFOprocessus.data" u 1:2 nooutput
+set label 3 sprintf("%.2fms", STATS_pos_max_y) left at STATS_pos_max_y, STATS_max_y
+
+stats "data/impliciteFIFOthread.data" u 1:2 nooutput
+set label 4 sprintf("%.2fms", STATS_pos_max_y) left at STATS_pos_max_y, STATS_max_y
 
 
-stats "test.dat" u 1:2 nooutput
-set xrange [STATS_min_x:STATS_max_x]
+stats "data/tempsContextprocessus.data" u 1:2 nooutput
+set label 5 sprintf("%.2fms", STATS_pos_max_y) left at STATS_pos_max_y, STATS_max_y
 
-set label 1 sprintf("%.2f", STATS_pos_max_y) center at STATS_pos_max_y, STATS_max_y 
+stats "data/tempsContextthread.data" u 1:2 nooutput
+set label 6 sprintf("%.2fms", STATS_pos_max_y) left at STATS_pos_max_y, STATS_max_y
 
-
-
-plot "test.dat" using 1:2 with boxes
+set key right top
+plot "data/expliciteFIFOprocessus.data" using ($1-dwidth*1):2  title "expliciteFIFOprocessus" with boxes, \
+  "data/expliciteFIFOthread.data" using ($1-dwidth*2):2  title "expliciteFIFOthread" with boxes, \
+  "data/impliciteFIFOprocessus.data" using ($1-dwidth*3):2  title "impliciteFIFOprocessus" with boxes, \
+  "data/impliciteFIFOthread.data" using ($1+dwidth*1):2  title "impliciteFIFOthread" with boxes, \
+  "data/tempsContextthread.data" using ($1+dwidth*2):2 title "tempsContextthread" with boxes, \
+  "data/tempsContextprocessus.data" using ($1+dwidth*3):2  title "tempsContextprocessus" with boxes
