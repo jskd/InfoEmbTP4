@@ -31,6 +31,11 @@ bench-exec-thread:
 bench-exec-processus:
 	(cd tempsExecution; make bench-processus)
 
+clean:
+	(cd tempsExecution; make clean)
+	(cd tempsContext; make clean)
+	(cd impliciteFIFO; make clean)
+	(cd expliciteFIFO; make clean)
 
-#tar: clean
-#	tar -zcvf PooCAv_Project_G7.tar.gz .gitignore Makefile LICENSE projetv1.pdf README.md UML_v1.pdf deliverables/ bin/ src/
+tar: clean
+	tar -zcvf LefrancSkodaTP4.tar.gz *
