@@ -5,6 +5,7 @@
 \usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
 \usepackage{url}
 \usepackage{graphicx}
+
 \hbadness=99999
 \title{TD4 - InfoEmb}
 \author{Jérôme Skoda, Joaquim Lefranc}
@@ -122,22 +123,27 @@ Laptop: CPU: i5-2430M @ 2.40GHz 2 cores 4 threads RAM: 32Go @ 1 600MHz
 
 Pour faire l'ordonnancement, nous avons utilisé deux sémaphore: un est ouvert
 et l'autre bloqué à l'état initial. Chacun des processus ou thread attendent
-chacun l'ouverture d'un sémaphore et ouvre l'autre. De cette manière on obtien
+chacun l'ouverture d'un sémaphore et ouvre l'autre. De cette manière on obtient
 l'ordonnancement P1 P2 P1 P2 etc.
 
 Les résultat peuvent varier en fonction de de sémaphore utilisé exemple
 dans thread.c avec des sémaphore partagé, le changement de contexte est plus
 long.
-
-
-Source: expliciteFIFO/processus.c et expliciteFIFO/thread.c et  impliciteFIFO/processus.c et impliciteFIFO/thread.c  
-
+\newline
+\newline
+\textit{Source: expliciteFIFO/processus.c et expliciteFIFO/thread.c et  impliciteFIFO/processus.c et impliciteFIFO/thread.c  }
+\newline
+\textit{Les résultats obtenus avec le script stat.py } 
+\newline
+\newline
 Le changement de contexte implicite et explicite, on remarque que les thread sont plus rapide.
 
 Voici un graph sur basé sur 1000 échantillon de moyenne. 
 Le maximum de chaque courbe représente le résultat qui a statistiquement plus de chance de tomber.
 
-\includegraphics[width=\linewidth]{graph.png}.
+\includegraphics[width=\textwidth]{graph.png}
+
+On remarque que les temps avec le changement implificte FIFO sont plus bref que les temps avec un changement explicite. 
 
 \section{Comparaison avec d'autres résultats de TP}
 
