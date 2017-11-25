@@ -11,3 +11,7 @@ bench-processus: processus
 
 bench-thread: thread
 	taskset -c 0 ./thread 100000
+
+clean:
+	rm -f processus
+	rm -f thread
