@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
 \usepackage{url}
+\usepackage{graphicx}
 
 \hbadness=99999
 \title{TD4 - InfoEmb}
@@ -122,12 +123,18 @@ Laptop: CPU: i5-2430M @ 2.40GHz 2 cores 4 threads RAM: 32Go @ 1 600MHz
 
 Pour faire l'ordonnancement, nous avons utilisé deux sémaphore: un est ouvert
 et l'autre bloqué à l'état initial. Chacun des processus ou thread attendent
-chacun l'ouverture d'un sémaphore et ouvre l'autre. De cette manière on obtien
+chacun l'ouverture d'un sémaphore et ouvre l'autre. De cette manière on obtient
 l'ordonnancement P1 P2 P1 P2 etc.
 
-Les résultat peuvent varier en fonction du type de sémaphore utilisé exemple
+Les résultat peuvent varier en fonction du type de sémaphore utilisé, exemple
 dans thread.c avec des sémaphore partagé, le changement de contexte est plus
 long.
+
+Voici les résultats obtenus avec le script stat.py pour les différentes méthodes : \newline \newline
+\includegraphics[width=\textwidth]{graph.png}
+\newline
+
+On remarque que les temps avec le changement implificte FIFO sont plus bref que les temps avec un changement explicite. 
 
 \section{Comparaison avec d'autres résultats de TP}
 
@@ -137,7 +144,5 @@ Cependant nos résultats sont cohérents avec ceux d'autres groupes, les ordres 
 
 \section{Outils de « benchmarking »}
 La commande ./lat\_proc -N 1000 fork nous donne une granularité de 62 microsecondes. \newline
-
-
 
 \end{document}
